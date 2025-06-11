@@ -27,6 +27,51 @@
     a:hover {
       text-decoration: underline;
     }
+
+    #suggestion-section {
+      margin-top: 40px;
+      display: none;
+    }
+
+    .suggestion-btn {
+      background: #ff0000;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      margin-top: 30px;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 500px;
+      height: 120px;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      resize: vertical;
+    }
+
+    .send-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: green;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .status-message {
+      margin-top: 15px;
+      font-size: 16px;
+      color: green;
+    }
   </style>
 </head>
 <body>
@@ -35,6 +80,32 @@
   <a href="https://youtube.com/@fansassociation-d6i?si=BiUPgPX4vHDybCpY" target="_blank">
     Visit Our Official Channel
   </a>
+
+  <br><br>
+  <button class="suggestion-btn" onclick="showSuggestion()">💬 Suggestion</button>
+
+  <div id="suggestion-section">
+    <form id="suggestionForm" action="https://formsubmit.co/associationfans961@gmail.com" method="POST">
+      <textarea name="message" placeholder="Write your suggestion or feedback here..." required></textarea><br>
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://your-username.github.io/your-repo-name/contact.html?sent=true">
+      <button class="send-btn" type="submit">Send</button>
+    </form>
+    <div class="status-message" id="statusMsg"></div>
+  </div>
+
+  <script>
+    function showSuggestion() {
+      document.getElementById('suggestion-section').style.display = 'block';
+    }
+
+    // Optional: show status after redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('sent') === 'true') {
+      document.getElementById('statusMsg').innerText = '✅ Suggestion sent successfully!';
+      document.getElementById('suggestion-section').style.display = 'block';
+    }
+  </script>
 
 </body>
 </html>
