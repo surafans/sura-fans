@@ -16,7 +16,7 @@
       color: #ff0000;
     }
 
-    a {
+    a, .back-home {
       display: inline-block;
       margin-top: 20px;
       font-size: 18px;
@@ -24,7 +24,7 @@
       text-decoration: none;
     }
 
-    a:hover {
+    a:hover, .back-home:hover {
       text-decoration: underline;
     }
 
@@ -72,6 +72,13 @@
       font-size: 16px;
       color: green;
     }
+
+    .back-home {
+      display: block;
+      margin-top: 40px;
+      font-size: 18px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
@@ -88,18 +95,20 @@
     <form id="suggestionForm" action="https://formsubmit.co/associationfans961@gmail.com" method="POST">
       <textarea name="message" placeholder="Write your suggestion or feedback here..." required></textarea><br>
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://your-username.github.io/your-repo-name/contact.html?sent=true">
+      <input type="hidden" name="_next" value="contact.html?sent=true">
       <button class="send-btn" type="submit">Send</button>
     </form>
     <div class="status-message" id="statusMsg"></div>
   </div>
+
+  <!-- Back to Home link -->
+  <a class="back-home" href="index.html">⬅️ Back to Home</a>
 
   <script>
     function showSuggestion() {
       document.getElementById('suggestion-section').style.display = 'block';
     }
 
-    // Optional: show status after redirect
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('sent') === 'true') {
       document.getElementById('statusMsg').innerText = '✅ Suggestion sent successfully!';
