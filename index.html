@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sura Cinematic Universe</title>
   <style>
     body {
@@ -54,34 +54,37 @@
     }
 
     header {
-      padding: 15px;
       background: black;
       color: white;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
     }
 
     .menu-icon {
+      font-size: 22px;
       cursor: pointer;
-      font-size: 20px;
     }
 
     .menu-dropdown {
       display: none;
       position: absolute;
-      right: 15px;
       top: 60px;
+      right: 20px;
       background: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      padding: 10px;
+      color: black;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      border-radius: 5px;
+      overflow: hidden;
     }
 
     .menu-dropdown a {
       display: block;
-      padding: 8px;
+      padding: 10px;
       text-decoration: none;
-      color: #333;
+      color: black;
     }
 
     .menu-dropdown a:hover {
@@ -98,10 +101,11 @@
     .video-card {
       width: 300px;
       margin: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      overflow: hidden;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      background: #fff;
     }
 
     .video-card img.thumbnail {
@@ -114,15 +118,15 @@
     }
 
     .video-title {
-      font-size: 16px;
-      color: #222;
+      font-size: 18px;
       margin-bottom: 10px;
+      color: #222;
     }
 
     .watch-btn {
       display: inline-block;
       padding: 8px 16px;
-      background: #ff0000;
+      background: red;
       color: white;
       text-decoration: none;
       border-radius: 5px;
@@ -130,22 +134,22 @@
     }
 
     .watch-btn:hover {
-      background: #cc0000;
+      background: darkred;
     }
   </style>
 </head>
 <body>
 
-  <!-- 🔃 Loader -->
+  <!-- Loader -->
   <div id="loader">
-    <img src="Logo/logo.png" alt="SURA Logo" />
-    <h1 id="loader-text">SURA CINEMATIC UNIVERSE</h1>
+    <img src="images/logo.png" alt="SURA Logo" />
+    <div id="loader-text">SURA CINEMATIC UNIVERSE</div>
   </div>
 
-  <!-- 🌐 Main Content -->
+  <!-- Header -->
   <header>
-    SURA FANS
-    <div class="menu-icon" onclick="toggleMenu()">&#x22EE;</div>
+    <div>SURA FANS</div>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
     <div class="menu-dropdown" id="menuDropdown">
       <a href="#">Videos</a>
       <a href="#">Photos</a>
@@ -153,9 +157,10 @@
     </div>
   </header>
 
+  <!-- Videos -->
   <div class="video-list">
     <div class="video-card">
-      <img class="thumbnail" src="https://img.youtube.com/vi/GEQY1qHQ_fE/hqdefault.jpg" alt="Video 1" />
+      <img class="thumbnail" src="https://img.youtube.com/vi/GEQY1qHQ_fE/hqdefault.jpg" alt="Video 1">
       <div class="video-content">
         <div class="video-title">SURA Fans Special Video</div>
         <a class="watch-btn" href="https://www.youtube.com/watch?v=GEQY1qHQ_fE" target="_blank">Watch</a>
@@ -163,7 +168,7 @@
     </div>
 
     <div class="video-card">
-      <img class="thumbnail" src="https://img.youtube.com/vi/Z6KszJCVUoo/hqdefault.jpg" alt="Video 2" />
+      <img class="thumbnail" src="https://img.youtube.com/vi/Z6KszJCVUoo/hqdefault.jpg" alt="Video 2">
       <div class="video-content">
         <div class="video-title">SURA Mass Shorts</div>
         <a class="watch-btn" href="https://www.youtube.com/shorts/Z6KszJCVUoo" target="_blank">Watch</a>
@@ -174,21 +179,18 @@
   <script>
     function toggleMenu() {
       const menu = document.getElementById("menuDropdown");
-      menu.style.display = (menu.style.display === "block") ? "none" : "block";
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 
-    window.onclick = function(event) {
+    window.onclick = function(e) {
       const menu = document.getElementById("menuDropdown");
       const icon = document.querySelector(".menu-icon");
-      if (!menu.contains(event.target) && !icon.contains(event.target)) {
+      if (!menu.contains(e.target) && !icon.contains(e.target)) {
         menu.style.display = "none";
       }
     }
 
     window.onload = function() {
-      const text = document.getElementById("loader-text");
-      text.style.opacity = 1;
-
       setTimeout(() => {
         document.getElementById("loader").style.display = "none";
       }, 3000);
