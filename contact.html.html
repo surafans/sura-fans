@@ -6,7 +6,7 @@
   <title>Contact Us - SURA FANS</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       background: linear-gradient(135deg, #ff0000, #000000);
       color: white;
       margin: 0;
@@ -18,85 +18,96 @@
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.85);
-      padding: 25px;
-      border-radius: 15px;
-      max-width: 400px;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 420px;
       width: 90%;
       text-align: center;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
       animation: fadeIn 0.8s ease-in-out;
     }
 
     h1 {
+      font-size: 26px;
+      margin-bottom: 15px;
       color: #ff4d4d;
-      margin-bottom: 10px;
     }
 
     a.youtube-link {
-      display: inline-block;
-      padding: 10px 20px;
+      display: block;
+      padding: 12px;
       background: #ff0000;
       color: white;
       text-decoration: none;
-      border-radius: 8px;
-      margin-top: 10px;
+      border-radius: 10px;
+      margin: 15px 0;
       font-weight: bold;
-      transition: background 0.3s;
+      font-size: 16px;
+      transition: background 0.3s, transform 0.2s;
     }
     a.youtube-link:hover {
       background: #cc0000;
+      transform: scale(1.05);
     }
 
     button {
       background: #ff4d4d;
       color: white;
       border: none;
-      padding: 10px 15px;
+      padding: 12px;
       font-size: 16px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 15px;
-      transition: background 0.3s;
+      margin-top: 10px;
+      width: 100%;
+      transition: background 0.3s, transform 0.2s;
     }
     button:hover {
       background: #cc0000;
+      transform: scale(1.05);
     }
 
     form {
       display: none;
       margin-top: 15px;
+      animation: fadeIn 0.5s ease-in-out;
     }
 
     textarea {
       width: 100%;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       border: none;
       resize: none;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      font-size: 14px;
     }
 
     input[type="submit"] {
       background: #28a745;
       color: white;
       border: none;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       cursor: pointer;
       width: 100%;
       font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
     }
     input[type="submit"]:hover {
       background: #218838;
+      transform: scale(1.05);
     }
 
     .success-message {
       display: none;
       background: #28a745;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       margin-top: 15px;
+      font-size: 14px;
     }
 
     a.back-link {
@@ -104,6 +115,7 @@
       margin-top: 20px;
       color: #00bfff;
       text-decoration: none;
+      font-size: 14px;
     }
     a.back-link:hover {
       text-decoration: underline;
@@ -118,9 +130,9 @@
 <body>
   <div class="container">
     <h1>📺 YouTube Channel</h1>
-    <a class="youtube-link" href="https://www.youtube.com/@surafansclub" target="_blank">Visit Our Channel</a>
+    <a class="youtube-link" href="https://www.youtube.com/@surafansclub/" target="_blank">Visit Our Channel</a>
 
-    <button onclick="showSuggestion()">💬 Suggestion</button>
+    <button onclick="showSuggestion()">💬 Send a Suggestion</button>
 
     <form id="suggestionForm" action="https://formsubmit.co/associationfans961@gmail.com" method="POST">
       <textarea name="suggestion" placeholder="Write your suggestion..." required></textarea>
@@ -147,4 +159,4 @@
     }
   </script>
 </body>
-</html>
+        </html>
