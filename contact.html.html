@@ -1,120 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us - SURA FANS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #fff;
-      padding: 30px;
+      background: linear-gradient(135deg, #ff0000, #000000);
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
       text-align: center;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+      animation: fadeIn 0.8s ease-in-out;
     }
 
     h1 {
-      color: #ff0000;
+      color: #ff4d4d;
+      margin-bottom: 10px;
     }
 
-    a, .back-home {
+    a.youtube-link {
       display: inline-block;
-      margin-top: 20px;
-      font-size: 18px;
-      color: blue;
-      text-decoration: none;
-    }
-
-    a:hover, .back-home:hover {
-      text-decoration: underline;
-    }
-
-    #suggestion-section {
-      margin-top: 40px;
-      display: none;
-    }
-
-    .suggestion-btn {
+      padding: 10px 20px;
       background: #ff0000;
       color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    a.youtube-link:hover {
+      background: #cc0000;
+    }
+
+    button {
+      background: #ff4d4d;
+      color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 10px 15px;
       font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
-      border-radius: 6px;
-      margin-top: 30px;
+      margin-top: 15px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+
+    form {
+      display: none;
+      margin-top: 15px;
     }
 
     textarea {
       width: 100%;
-      max-width: 500px;
-      height: 120px;
       padding: 10px;
-      font-size: 16px;
-      margin-top: 20px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      resize: vertical;
+      border-radius: 8px;
+      border: none;
+      resize: none;
+      margin-bottom: 10px;
     }
 
-    .send-btn {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: green;
+    input[type="submit"] {
+      background: #28a745;
       color: white;
       border: none;
-      border-radius: 6px;
+      padding: 10px;
+      border-radius: 8px;
       cursor: pointer;
-    }
-
-    .status-message {
-      margin-top: 15px;
+      width: 100%;
       font-size: 16px;
-      color: green;
+    }
+    input[type="submit"]:hover {
+      background: #218838;
     }
 
-    .back-home {
+    .success-message {
+      display: none;
+      background: #28a745;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    a.back-link {
       display: block;
-      margin-top: 40px;
-      font-size: 18px;
-      color: #333;
+      margin-top: 20px;
+      color: #00bfff;
+      text-decoration: none;
+    }
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-10px);}
+      to {opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>📺 YouTube Channel</h1>
+    <a class="youtube-link" href="https://www.youtube.com/@surafansclub" target="_blank">Visit Our Channel</a>
 
-  <h1>📺 YouTube Channel Link</h1>
-  <a href="https://youtube.com/@fansassociation-d6i?si=BiUPgPX4vHDybCpY" target="_blank">
-    Visit Our Official Channel
-  </a>
+    <button onclick="showSuggestion()">💬 Suggestion</button>
 
-  <br><br>
-  <button class="suggestion-btn" onclick="showSuggestion()">💬 Suggestion</button>
-
-  <div id="suggestion-section">
     <form id="suggestionForm" action="https://formsubmit.co/associationfans961@gmail.com" method="POST">
-      <textarea name="message" placeholder="Write your suggestion or feedback here..." required></textarea><br>
+      <textarea name="suggestion" placeholder="Write your suggestion..." required></textarea>
+      <input type="hidden" name="_next" value="https://surafans.github.io/sura-fans/contact.html?sent=true">
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="contact.html?sent=true">
-      <button class="send-btn" type="submit">Send</button>
+      <input type="submit" value="Send Suggestion">
     </form>
-    <div class="status-message" id="statusMsg"></div>
-  </div>
 
-  <!-- Back to Home link -->
-  <a class="back-home" href="index.html">⬅️ Back to Home</a>
+    <div id="successMessage" class="success-message">
+      ✅ Suggestion sent successfully!
+    </div>
+
+    <a class="back-link" href="index.html">⬅ Back to Home</a>
+  </div>
 
   <script>
     function showSuggestion() {
-      document.getElementById('suggestion-section').style.display = 'block';
+      document.getElementById('suggestionForm').style.display = 'block';
     }
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('sent') === 'true') {
-      document.getElementById('statusMsg').innerText = '✅ Suggestion sent successfully!';
-      document.getElementById('suggestion-section').style.display = 'block';
+      document.getElementById('successMessage').style.display = 'block';
     }
   </script>
-
 </body>
 </html>
