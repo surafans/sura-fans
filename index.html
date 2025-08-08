@@ -1,13 +1,253 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sura Cinematic Universe</title>
   <style>
-    /* all your CSS here */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    /* Loader */
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: fadeOut 1.5s ease 3s forwards;
+    }
+
+    #loader img {
+      width: 130px;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease;
+    }
+
+    #loader-text {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      opacity: 0;
+      animation: fadeInText 2s ease forwards 1s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeInText {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    /* Header */
+    header {
+      background: black;
+      color: white;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    header .logo-text {
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .right-icons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Login button */
+    .login-btn {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .login-btn img {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Menu dropdown */
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: white;
+      color: black;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-radius: 6px;
+      overflow: hidden;
+      min-width: 150px;
+    }
+
+    .menu-dropdown a {
+      display: block;
+      padding: 12px 15px;
+      text-decoration: none;
+      color: black;
+      font-size: 15px;
+    }
+
+    .menu-dropdown a:hover {
+      background: #f4f4f4;
+    }
+
+    /* Videos section */
+    .video-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .video-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .video-card img.thumbnail {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .video-content {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .video-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #222;
+    }
+
+    .watch-btn {
+      display: inline-block;
+      padding: 10px 18px;
+      background: red;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 15px;
+      transition: background 0.3s ease;
+    }
+
+    .watch-btn:hover {
+      background: darkred;
+    }
   </style>
 </head>
 <body>
-  <!-- your login box HTML here -->
+
+  <!-- Loader -->
+  <div id="loader">
+    <img src="Images/logo.png" alt="SURA Logo" />
+    <div id="loader-text">SURA CINEMATIC UNIVERSE</div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-text">SURA FANS</div>
+    <div class="right-icons">
+      <a href="login.html" class="login-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Login">
+      </a>
+      <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </div>
+    <div class="menu-dropdown" id="menuDropdown">
+      <a href="#">Videos</a>
+      <a href="#">Photos</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+  </header>
+
+  <!-- Videos -->
+  <div class="video-list">
+    <div class="video-card">
+      <img class="thumbnail" src="https://img.youtube.com/vi/GEQY1qHQ_fE/hqdefault.jpg" alt="Video 1">
+      <div class="video-content">
+        <div class="video-title">SURA Fans Special Video</div>
+        <a class="watch-btn" href="https://www.youtube.com/watch?v=GEQY1qHQ_fE" target="_blank">Watch</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <img class="thumbnail" src="https://img.youtube.com/vi/Z6KszJCVUoo/hqdefault.jpg" alt="Video 2">
+      <div class="video-content">
+        <div class="video-title">SURA Mass Shorts</div>
+        <a class="watch-btn" href="https://www.youtube.com/shorts/Z6KszJCVUoo" target="_blank">Watch</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("menuDropdown");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    window.onclick = function(e) {
+      const menu = document.getElementById("menuDropdown");
+      const icon = document.querySelector(".menu-icon");
+      if (!menu.contains(e.target) && !icon.contains(e.target)) {
+        menu.style.display = "none";
+      }
+    }
+
+    window.onload = function() {
+      setTimeout(() => {
+        document.getElementById("loader").style.display = "none";
+      }, 3000);
+    }
+  </script>
+
 </body>
-</html>
+  </html>
