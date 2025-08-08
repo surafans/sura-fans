@@ -74,9 +74,32 @@
       letter-spacing: 1px;
     }
 
+    .right-icons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
     .menu-icon {
       font-size: 24px;
       cursor: pointer;
+    }
+
+    /* Login button */
+    .login-btn {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .login-btn img {
+      width: 18px;
+      height: 18px;
     }
 
     /* Menu dropdown */
@@ -173,7 +196,12 @@
   <!-- Header -->
   <header>
     <div class="logo-text">SURA FANS</div>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="right-icons">
+      <a href="login.html" class="login-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Login">
+      </a>
+      <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </div>
     <div class="menu-dropdown" id="menuDropdown">
       <a href="#">Videos</a>
       <a href="#">Photos</a>
