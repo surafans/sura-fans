@@ -7,9 +7,12 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
     }
 
+    /* Loader */
     #loader {
       position: fixed;
       top: 0;
@@ -26,15 +29,15 @@
     }
 
     #loader img {
-      width: 120px;
-      height: auto;
+      width: 130px;
       margin-bottom: 20px;
       animation: fadeIn 2s ease;
     }
 
     #loader-text {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: bold;
+      letter-spacing: 2px;
       opacity: 0;
       animation: fadeInText 2s ease forwards 1s;
     }
@@ -53,21 +56,30 @@
       to { opacity: 0; visibility: hidden; }
     }
 
+    /* Header */
     header {
       background: black;
       color: white;
-      padding: 15px 20px;
+      padding: 15px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: relative;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    header .logo-text {
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
     .menu-icon {
-      font-size: 22px;
+      font-size: 24px;
       cursor: pointer;
     }
 
+    /* Menu dropdown */
     .menu-dropdown {
       display: none;
       position: absolute;
@@ -75,62 +87,74 @@
       right: 20px;
       background: white;
       color: black;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      border-radius: 5px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-radius: 6px;
       overflow: hidden;
+      min-width: 150px;
     }
 
     .menu-dropdown a {
       display: block;
-      padding: 10px;
+      padding: 12px 15px;
       text-decoration: none;
       color: black;
+      font-size: 15px;
     }
 
     .menu-dropdown a:hover {
-      background: #f0f0f0;
+      background: #f4f4f4;
     }
 
+    /* Videos section */
     .video-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
     }
 
     .video-card {
-      width: 300px;
-      margin: 10px;
-      border: 1px solid #ccc;
+      background: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      background: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
     .video-card img.thumbnail {
       width: 100%;
       height: auto;
+      display: block;
     }
 
     .video-content {
       padding: 15px;
+      text-align: center;
     }
 
     .video-title {
       font-size: 18px;
-      margin-bottom: 10px;
+      font-weight: 600;
+      margin-bottom: 12px;
       color: #222;
     }
 
     .watch-btn {
       display: inline-block;
-      padding: 8px 16px;
+      padding: 10px 18px;
       background: red;
       color: white;
       text-decoration: none;
       border-radius: 5px;
-      font-size: 14px;
+      font-size: 15px;
+      transition: background 0.3s ease;
     }
 
     .watch-btn:hover {
@@ -148,7 +172,7 @@
 
   <!-- Header -->
   <header>
-    <div>SURA FANS</div>
+    <div class="logo-text">SURA FANS</div>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
     <div class="menu-dropdown" id="menuDropdown">
       <a href="#">Videos</a>
