@@ -12,7 +12,7 @@ loginBtn.addEventListener('click', async (e) => {
     await signInWithEmailAndPassword(auth, email, password);
     console.log("Login successful — redirecting");
     // GitHub Pages needs repo name in the path
-    window.location.href = "/sura-fans/admin.html";
+    window.location.href = "/sura-login/admin.html";
   } catch (error) {
     alert("Login failed: " + error.message);
   }
