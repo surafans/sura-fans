@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - Sura Cinematic Universe</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      margin: 0;
+    }
+    h2 {
+      margin-top: 10px;
+    }
+    .video-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .video-item {
+      background: white;
+      padding: 10px;
+      margin: 5px;
+      width: 80%;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    #addForm {
+      margin-top: 20px;
+    }
+    input {
+      padding: 5px;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SURA CINEMATIC UNIVERSE</h1>
+  <h2>Welcome Admin</h2>
+
+  <div id="addForm">
+    <input type="text" id="videoTitle" placeholder="Video Title">
+    <input type="text" id="videoURL" placeholder="YouTube URL">
+    <button onclick="addVideo()">Add Video</button>
+  </div>
+
+  <div class="video-list" id="videoList"></div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+  <script>
+    // Firebase Config (use your own from Firebase Console)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function loadVideos() {
+      const list = document.getElementById("videoList");
+      list.innerHTML = "";
+      db.collection("videos").onSnapshot(snapshot => {
+        list.innerHTML = "";
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.className = "video-item";
+          div.innerHTML = `
+            <span>${data.title}</span>
+            <div>
+              <a href="${data.url}" target="_blank">Watch</a>
+              <button onclick="deleteVideo('${doc.id}')">Delete</button>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      });
+    }
+
+    function addVideo() {
+      const title = document.getElementById("videoTitle").value;
+      const url = document.getElementById("videoURL").value;
+      if (title && url) {
+        db.collection("videos").add({ title, url }).then(() => {
+          document.getElementById("videoTitle").value = "";
+          document.getElementById("videoURL").value = "";
+        });
+      }
+    }
+
+    function deleteVideo(id) {
+      db.collection("videos").doc(id).delete();
+    }
+
+    loadVideos();
+  </script>
+</body>
+</html>
