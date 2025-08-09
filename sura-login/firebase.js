@@ -1,8 +1,9 @@
-// firebase.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
   authDomain: "sura-fans-auth.firebaseapp.com",
@@ -12,9 +13,5 @@ const firebaseConfig = {
   appId: "1:399675179284:web:b4e7b2d0a409c2eab34201"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Export what other files will import
-export { app, auth, db, signInWithEmailAndPassword, onAuthStateChanged, signOut };
