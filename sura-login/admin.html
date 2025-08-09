@@ -1,1 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - SURA CINEMATIC UNIVERSE</title>
+  <style>
+    body { font-family:Arial; text-align:center; background:#f4f4f4; margin:0; padding:0; }
+    h1 { background:#222; color:#fff; padding:20px; margin:0; }
+    .container { padding:20px; }
+    .video-list { display:flex; flex-direction:column; align-items:center; gap:8px; margin-top:20px; }
+    .video-item { background:#fff; width:80%; padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    input { padding:6px; width:260px; margin-right:6px; }
+    button { padding:6px 10px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h1>SURA CINEMATIC UNIVERSE</h1>
+  <div class="container">
+    <h2>Welcome Admin</h2>
 
+    <div id="adminControls">
+      <input id="videoTitle" placeholder="Video Title">
+      <input id="videoURL" placeholder="YouTube URL (https://www.youtube.com/watch?v=VIDEO_ID)">
+      <button id="addBtn">Add</button>
+      <button id="signOutBtn" style="margin-left:12px">Sign out</button>
+    </div>
+
+    <div class="video-list" id="videoList"></div>
+  </div>
+
+  <script type="module">
+    // import app-level auth and db from firebase.js
+    import { auth, db, onAuthStateChanged, signOut } from './firebase.js';
+    import { collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    // protect page: if not logged in -> back to login
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = "/sura-fans/login.html";
+      }
+    });
+
+    const videoListEl = document.getElementById('videoList');
+    const videosCol = collection(db, 'videos');
+
+    // Real-time listener
+    onSnapshot(videosCol, snapshot => {
+      videoListEl.innerHTML = '';
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const id = docSnap.id;
+        const el = document.createElement('div');
+        el.className = 'video-item';
+        el.innerHTML = `
+          <div style="text-align:left">
+            <strong>${data.title || 'No title'}</strong><br>
+            <small>${data.url}</small>
+          </div>
+          <div>
+            <a href="${data.url}" target="_blank"><button>Watch</button></a>
+            <button data-id="${id}" class="delBtn">Delete</button>
+          </div>
+        `;
+        videoListEl.appendChild(el);
+      });
+
+      // attach delete handlers
+      document.querySelectorAll('.delBtn').forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.getAttribute('data-id');
+          await deleteDoc(doc(db, 'videos', id));
+        };
+      });
+    });
+
+    // Add video
+    document.getElementById('addBtn').addEventListener('click', async () => {
+      const title = document.getElementById('videoTitle').value.trim();
+      const url = document.getElementById('videoURL').value.trim();
+      if (!title || !url) return alert('Enter title and URL');
+      try {
+        await addDoc(videosCol, { title, url });
+        document.getElementById('videoTitle').value = '';
+        document.getElementById('videoURL').value = '';
+      } catch (err) {
+        alert('Add failed: ' + err.message);
+      }
+    });
+
+    // Sign out
+    document.getElementById('signOutBtn').addEventListener('click', async () => {
+      await signOut(auth);
+      window.location.href = "/sura-fans/login.html";
+    });
+  </script>
+</body>
+  </html>
