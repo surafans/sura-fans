@@ -1,5 +1,5 @@
 // login.js
-import { auth, signInWithEmailAndPassword } from './firebase.js';
+import { auth, signInWithEmailAndPassword } from './sura-login/firebase.js';
 
 const loginBtn = document.getElementById('loginBtn');
 
