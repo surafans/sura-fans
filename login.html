@@ -46,43 +46,43 @@
     <img src="logo.png" width="80" alt="Logo"><br>
     <input type="email" id="email" placeholder="Enter your email"><br>
     <input type="password" id="password" placeholder="Enter your password"><br>
-    <button id="loginBtn">Login</button>
+    <button onclick="login()">Login</button>
   </div>
 
-  <!-- Firebase App (core SDK) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-  <!-- Firebase Authentication -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
 
   <script>
-    // Your Firebase configuration (replace with yours from Firebase Console)
+    // Your Firebase configuration
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
+      authDomain: "sura-fans-auth.firebaseapp.com",
+      projectId: "sura-fans-auth",
+      storageBucket: "sura-fans-auth.firebasestorage.app",
+      messagingSenderId: "399675179284",
+      appId: "1:399675179284:web:b4e7b2d0a409c2eab34201"
     };
 
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Login button event
-    document.getElementById("loginBtn").addEventListener("click", function () {
+    // Login function
+    function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
       auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           alert("Login successful!");
-          window.location.href = "admin.html"; // Redirect after login
+          // Redirect to another page after login
+          window.location.href = "admin.html";
         })
         .catch((error) => {
           alert(error.message);
         });
-    });
+    }
   </script>
 </body>
 </html>
