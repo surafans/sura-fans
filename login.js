@@ -12,6 +12,8 @@ document.getElementById("loginBtn").addEventListener("click", () => {
     .then((userCredential) => {
       alert("✅ Login successful");
       console.log("User:", userCredential.user);
+      // Redirect to admin page after successful login
+      window.location.href = "admin.html";
     })
     .catch((error) => {
       alert("❌ Error: " + error.message);
