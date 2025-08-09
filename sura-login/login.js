@@ -8,12 +8,12 @@ document.getElementById("loginBtn").addEventListener("click", () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    console.log("Login successful — redirecting");
-    // GitHub Pages needs repo name in the path
-    window.location.href = "sura-login/admin.html";
-  } catch (error) {
-    alert("Login failed: " + error.message);
-  }
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      alert("✅ Login successful");
+      console.log("User:", userCredential.user);
+    })
+    .catch((error) => {
+      alert("❌ Error: " + error.message);
+    });
 });
