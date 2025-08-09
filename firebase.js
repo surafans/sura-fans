@@ -1,6 +1,9 @@
 // Import Firebase core
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 
+// Import Firebase Authentication functions
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
@@ -12,4 +15,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+
+// Initialize Auth
+const auth = getAuth(app);
+
+// Export auth and sign-in function
+export { auth, signInWithEmailAndPassword };
