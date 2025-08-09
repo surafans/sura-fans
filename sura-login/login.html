@@ -4,14 +4,39 @@
   <meta charset="UTF-8">
   <title>Login - Sura Fans</title>
   <style>
-    body { background:white; font-family:Arial; text-align:center; margin-top:100px; }
-    .login-box { width:300px; margin:auto; padding:20px; border:1px solid #ccc; border-radius:10px; }
-    input { width:90%; padding:10px; margin:10px 0; }
-    button { padding:10px 20px; background:blue; color:#fff; border:none; border-radius:5px; cursor:pointer; }
-    button:hover { background:darkblue; }
+    body {
+      background-color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    .login-box {
+      width: 300px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: blue;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: darkblue;
+    }
   </style>
 </head>
 <body>
+
   <div class="login-box">
     <h2>Login</h2>
     <input type="email" id="email" placeholder="Email"><br>
@@ -19,8 +44,14 @@
     <button id="loginBtn">Login</button>
   </div>
 
-  <!-- load our module files (order doesn't strictly matter but keep both) -->
+  <!-- Firebase App (core SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+  <!-- Firebase Authentication -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
+  
+  <!-- Your scripts -->
   <script type="module" src="sura-login/firebase.js"></script>
   <script type="module" src="sura-login/login.js"></script>
+
 </body>
 </html>
