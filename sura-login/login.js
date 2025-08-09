@@ -1,1 +1,19 @@
+// login.js
+import { auth, signInWithEmailAndPassword } from './firebase.js';
 
+const loginBtn = document.getElementById('loginBtn');
+
+loginBtn.addEventListener('click', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    console.log("Login successful — redirecting");
+    // GitHub Pages needs repo name in the path
+    window.location.href = "/sura-fans/admin.html";
+  } catch (error) {
+    alert("Login failed: " + error.message);
+  }
+});
