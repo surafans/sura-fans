@@ -20,55 +20,73 @@
     h2 {
       margin-top: 10px;
     }
-    .video-list {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
-    }
-    .video-item {
-      background: white;
-      padding: 10px;
-      margin: 5px;
-      width: 80%;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    button {
-      padding: 5px 10px;
-      cursor: pointer;
-    }
     #addForm {
-      margin-top: 20px;
+      margin: 20px;
     }
     input {
       padding: 5px;
-      width: 300px;
+      margin: 5px;
+      width: 250px;
+    }
+    button {
+      padding: 6px 12px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background: #333;
+      color: white;
+    }
+    img {
+      width: 100px;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
 
   <h1>SURA CINEMATIC UNIVERSE</h1>
-  <h2>Welcome Admin</h2>
+  <h2>Admin Panel</h2>
 
+  <!-- Add Video Form -->
   <div id="addForm">
     <input type="text" id="videoTitle" placeholder="Video Title">
-    <input type="text" id="videoURL" placeholder="YouTube URL">
+    <input type="text" id="videoURL" placeholder="Video URL">
+    <input type="text" id="videoThumbnail" placeholder="Thumbnail URL">
     <button onclick="addVideo()">Add Video</button>
   </div>
 
-  <div class="video-list" id="videoList"></div>
+  <!-- Video List -->
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Thumbnail</th>
+        <th>Watch</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody id="videoList"></tbody>
+  </table>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
   <script>
-    // Firebase Config (use your own from Firebase Console)
+    // Firebase Config (replace with your own)
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -78,9 +96,11 @@
       appId: "YOUR_APP_ID"
     };
 
+    // Init Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // Load Videos
     function loadVideos() {
       const list = document.getElementById("videoList");
       list.innerHTML = "";
@@ -88,31 +108,36 @@
         list.innerHTML = "";
         snapshot.forEach(doc => {
           const data = doc.data();
-          const div = document.createElement("div");
-          div.className = "video-item";
-          div.innerHTML = `
-            <span>${data.title}</span>
-            <div>
-              <a href="${data.url}" target="_blank">Watch</a>
-              <button onclick="deleteVideo('${doc.id}')">Delete</button>
-            </div>
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${data.title}</td>
+            <td><img src="${data.thumbnail}" alt="thumbnail"></td>
+            <td><a href="${data.url}" target="_blank">Watch</a></td>
+            <td><button onclick="deleteVideo('${doc.id}')">Delete</button></td>
           `;
-          list.appendChild(div);
+          list.appendChild(row);
         });
       });
     }
 
+    // Add Video
     function addVideo() {
       const title = document.getElementById("videoTitle").value;
       const url = document.getElementById("videoURL").value;
-      if (title && url) {
-        db.collection("videos").add({ title, url }).then(() => {
+      const thumbnail = document.getElementById("videoThumbnail").value;
+
+      if (title && url && thumbnail) {
+        db.collection("videos").add({ title, url, thumbnail }).then(() => {
           document.getElementById("videoTitle").value = "";
           document.getElementById("videoURL").value = "";
+          document.getElementById("videoThumbnail").value = "";
         });
+      } else {
+        alert("Please fill all fields!");
       }
     }
 
+    // Delete Video
     function deleteVideo(id) {
       db.collection("videos").doc(id).delete();
     }
