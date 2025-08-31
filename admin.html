@@ -89,16 +89,17 @@
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } 
       from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-    // Firebase Config (replace with your config)
+    // ✅ Your Firebase Config
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
+      authDomain: "sura-fans-auth.firebaseapp.com",
+      projectId: "sura-fans-auth",
+      storageBucket: "sura-fans-auth.firebasestorage.app",
+      messagingSenderId: "399675179284",
+      appId: "1:399675179284:web:b4e7b2d0a409c2eab34201"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
