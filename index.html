@@ -27,11 +27,7 @@
       z-index: 9999;
       animation: fadeOut 1.5s ease 3s forwards;
     }
-    #loader img {
-      width: 130px;
-      margin-bottom: 20px;
-      animation: fadeIn 2s ease;
-    }
+    #loader img { width: 130px; margin-bottom: 20px; animation: fadeIn 2s ease; }
     #loader-text {
       font-size: 24px;
       font-weight: bold;
@@ -135,10 +131,7 @@
       object-fit: cover;
       display: block;
     }
-    .video-content {
-      padding: 15px;
-      text-align: center;
-    }
+    .video-content { padding: 15px; text-align: center; }
     .video-title {
       font-size: 17px;
       font-weight: 600;
@@ -208,7 +201,7 @@
       apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
       authDomain: "sura-fans-auth.firebaseapp.com",
       projectId: "sura-fans-auth",
-      storageBucket: "sura-fans-auth.firebasestorage.app",
+      storageBucket: "sura-fans-auth.appspot.com",
       messagingSenderId: "399675179284",
       appId: "1:399675179284:web:b4e7b2d0a409c2eab34201"
     };
@@ -229,16 +222,14 @@
           snapshot.forEach((doc) => {
             const data = doc.data();
 
-            // If user provides their own thumbnail in Firestore, use it
+            // Determine thumbnail
             let thumbnail = data.thumbnail || "";
-            
-            // Otherwise auto-generate YouTube thumbnail
             if (!thumbnail && data.url) {
               let videoId = "";
               if (data.url.includes("watch?v=")) {
-                videoId = data.url.split("watch?v=")[1];
+                videoId = data.url.split("watch?v=")[1].split("&")[0];
               } else if (data.url.includes("shorts/")) {
-                videoId = data.url.split("shorts/")[1];
+                videoId = data.url.split("shorts/")[1].split("?")[0];
               }
               thumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "Images/default.jpg";
             }
@@ -248,7 +239,7 @@
             div.innerHTML = `
               <img class="thumbnail" src="${thumbnail}" alt="${data.title}">
               <div class="video-content">
-                <div class="video-title">${data.title}</div>
+                <div class="video-title">${data.title || "Untitled"}</div>
                 <a class="watch-btn" href="${data.url}" target="_blank">Watch</a>
               </div>
             `;
