@@ -115,7 +115,7 @@
           row.innerHTML = `
             <td>${data.title}</td>
             <td><a href="${data.url}" target="_blank">Watch</a></td>
-            <td><img src="${data.thumbnail || ''}" alt="thumbnail"></td>
+            <td><img src="${data.thumbnail || ''}" alt="Thumbnail"></td>
             <td><button onclick="deleteVideo('${docSnap.id}')">Delete</button></td>
           `;
           table.appendChild(row);
