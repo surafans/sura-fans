@@ -1,275 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sura Cinematic Universe</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f4f4f9;
-      color: #333;
-    }
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    /* Loader */
-    #loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      animation: fadeOut 1.5s ease 3s forwards;
-    }
-    #loader img { width: 130px; margin-bottom: 20px; animation: fadeIn 2s ease; }
-    #loader-text {
-      font-size: 24px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      opacity: 0;
-      animation: fadeInText 2s ease forwards 1s;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95);} to { opacity: 1; transform: scale(1);} }
-    @keyframes fadeInText { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: translateY(0);} }
-    @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
+    authDomain: "sura-fans-auth.firebaseapp.com",
+    projectId: "sura-fans-auth",
+    storageBucket: "sura-fans-auth.appspot.com",
+    messagingSenderId: "399675179284",
+    appId: "1:399675179284:web:b4e7b2d0a409c2eab34201"
+  };
 
-    /* Header */
-    header {
-      background: linear-gradient(90deg, #000, #222);
-      color: white;
-      padding: 15px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-    header .logo-text { font-size: 22px; font-weight: bold; letter-spacing: 1px; }
-    .right-icons { display: flex; align-items: center; gap: 15px; }
-    .menu-icon { font-size: 26px; cursor: pointer; }
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    /* Login button */
-    .login-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-    .login-btn img { width: 20px; height: 20px; }
+  function loadVideos() {
+    const videoList = document.getElementById("videoList");
+    const emptyMessage = document.getElementById("emptyMessage");
 
-    /* Dropdown Menu */
-    .menu-dropdown {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background: white;
-      color: black;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      border-radius: 8px;
-      overflow: hidden;
-      min-width: 160px;
-      animation: fadeIn 0.3s ease;
-    }
-    .menu-dropdown a {
-      display: block;
-      padding: 12px 15px;
-      text-decoration: none;
-      color: black;
-      font-size: 15px;
-    }
-    .menu-dropdown a:hover { background: #f0f0f0; }
+    onSnapshot(collection(db, "videos"), (snapshot) => {
+      videoList.innerHTML = "";
+      if (snapshot.empty) {
+        emptyMessage.style.display = "block";
+      } else {
+        emptyMessage.style.display = "none";
+        snapshot.forEach((doc) => {
+          const data = doc.data();
 
-    /* Videos Section */
-    .content-wrapper {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    .section-title {
-      text-align: center;
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 25px;
-      color: #222;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .video-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 25px;
-    }
-    .video-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-    .video-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
-    }
-    .video-card img.thumbnail {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
-    .video-content { padding: 15px; text-align: center; }
-    .video-title {
-      font-size: 17px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: #111;
-    }
-    .watch-btn {
-      display: inline-block;
-      padding: 10px 20px;
-      background: linear-gradient(90deg, #e50914, #b0060f);
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 15px;
-      font-weight: bold;
-      transition: transform 0.2s ease, background 0.3s ease;
-    }
-    .watch-btn:hover {
-      transform: scale(1.05);
-      background: linear-gradient(90deg, #b0060f, #e50914);
-    }
-    .empty-message {
-      text-align: center;
-      font-size: 18px;
-      color: #777;
-      margin-top: 40px;
-    }
-  </style>
-</head>
-<body>
+          // ✅ Always use 'thumbnail' field if present
+          let thumbnail = data.thumbnail || "";
 
-  <!-- Loader -->
-  <div id="loader">
-    <img src="Images/logo.png" alt="SURA Logo" />
-    <div id="loader-text">SURA CINEMATIC UNIVERSE</div>
-  </div>
-
-  <!-- Header -->
-  <header>
-    <div class="logo-text">SURA CINEMATIC UNIVERSE</div>
-    <div class="right-icons">
-      <a href="login.html" class="login-btn">
-        <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Login">
-      </a>
-      <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    </div>
-    <div class="menu-dropdown" id="menuDropdown">
-      <a href="#">Videos</a>
-      <a href="#">Photos</a>
-      <a href="contact.html">Contact Us</a>
-    </div>
-  </header>
-
-  <!-- Videos -->
-  <div class="content-wrapper">
-    <h2 class="section-title">Latest Videos</h2>
-    <div class="video-list" id="videoList"></div>
-    <div id="emptyMessage" class="empty-message" style="display:none;">No videos available yet.</div>
-  </div>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
-      authDomain: "sura-fans-auth.firebaseapp.com",
-      projectId: "sura-fans-auth",
-      storageBucket: "sura-fans-auth.appspot.com",
-      messagingSenderId: "399675179284",
-      appId: "1:399675179284:web:b4e7b2d0a409c2eab34201"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    function loadVideos() {
-      const videoList = document.getElementById("videoList");
-      const emptyMessage = document.getElementById("emptyMessage");
-
-      onSnapshot(collection(db, "videos"), (snapshot) => {
-        videoList.innerHTML = "";
-        if (snapshot.empty) {
-          emptyMessage.style.display = "block";
-        } else {
-          emptyMessage.style.display = "none";
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-
-            // Determine thumbnail
-            let thumbnail = data.thumbnail || "";
-            if (!thumbnail && data.url) {
-              let videoId = "";
-              if (data.url.includes("watch?v=")) {
-                videoId = data.url.split("watch?v=")[1].split("&")[0];
-              } else if (data.url.includes("shorts/")) {
-                videoId = data.url.split("shorts/")[1].split("?")[0];
-              }
-              thumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "Images/default.jpg";
+          // ✅ If no thumbnail stored, try to auto-generate from YouTube URL
+          if (!thumbnail && data.url) {
+            let videoId = "";
+            if (data.url.includes("watch?v=")) {
+              videoId = data.url.split("watch?v=")[1].split("&")[0];
+            } else if (data.url.includes("shorts/")) {
+              videoId = data.url.split("shorts/")[1].split("?")[0];
+            } else if (data.url.includes("youtu.be/")) {
+              videoId = data.url.split("youtu.be/")[1].split("?")[0];
             }
+            thumbnail = videoId 
+              ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+              : "Images/default.jpg";
+          }
 
-            const div = document.createElement("div");
-            div.className = "video-card";
-            div.innerHTML = `
-              <img class="thumbnail" src="${thumbnail}" alt="${data.title}">
-              <div class="video-content">
-                <div class="video-title">${data.title || "Untitled"}</div>
-                <a class="watch-btn" href="${data.url}" target="_blank">Watch</a>
-              </div>
-            `;
-            videoList.appendChild(div);
-          });
-        }
-      });
-    }
-
-    loadVideos();
-  </script>
-
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById("menuDropdown");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    }
-    window.onclick = function(e) {
-      const menu = document.getElementById("menuDropdown");
-      const icon = document.querySelector(".menu-icon");
-      if (!menu.contains(e.target) && !icon.contains(e.target)) {
-        menu.style.display = "none";
+          // ✅ Create video card
+          const div = document.createElement("div");
+          div.className = "video-card";
+          div.innerHTML = `
+            <img class="thumbnail" src="${thumbnail}" alt="${data.title || "Untitled"}">
+            <div class="video-content">
+              <div class="video-title">${data.title || "Untitled"}</div>
+              <a class="watch-btn" href="${data.url || "#"}" target="_blank">Watch</a>
+            </div>
+          `;
+          videoList.appendChild(div);
+        });
       }
-    }
-    window.onload = function() {
-      setTimeout(() => {
-        document.getElementById("loader").style.display = "none";
-      }, 3000);
-    }
-  </script>
+    });
+  }
 
-</body>
-</html>
+  loadVideos();
+</script>
