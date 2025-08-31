@@ -65,7 +65,7 @@
   <div class="form">
     <input type="text" id="videoTitle" placeholder="Video Title">
     <input type="text" id="videoURL" placeholder="YouTube URL">
-    <input type="text" id="videoThumbnail" placeholder="Thumbnail URL (optional)">
+    <input type="text" id="videoThumbnail" placeholder="Thumbnail URL">
     <br>
     <button onclick="addVideo()">Add Video</button>
   </div>
@@ -105,59 +105,6 @@
 
     const table = document.getElementById("videoTable");
 
-    // ✅ Improved addVideo with auto-thumbnail
-    window.addVideo = async function() {
-      const titleEl = document.getElementById("videoTitle");
-      const urlEl = document.getElementById("videoURL");
-      const thumbEl = document.getElementById("videoThumbnail");
-
-      let title = (titleEl.value || "").trim();
-      let url = (urlEl.value || "").trim();
-      let thumbnail = (thumbEl.value || "").trim();
-
-      // Extract YouTube ID
-      function getYouTubeID(u) {
-        if (!u) return "";
-        if (u.includes("watch?v=")) return u.split("watch?v=")[1].split("&")[0];
-        if (u.includes("youtu.be/")) return u.split("youtu.be/")[1].split("?")[0];
-        if (u.includes("shorts/")) return u.split("shorts/")[1].split("?")[0];
-        return "";
-      }
-
-      // If thumbnail looks like a YouTube page, auto-generate
-      if (thumbnail && (thumbnail.includes("youtube.com/watch") || thumbnail.includes("youtu.be") || thumbnail.includes("shorts/"))) {
-        const id = getYouTubeID(thumbnail);
-        if (id) thumbnail = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-      }
-
-      // If no thumbnail but YouTube URL given → auto-generate
-      if (!thumbnail && url) {
-        const id = getYouTubeID(url);
-        if (id) thumbnail = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-      }
-
-      if (!title || !url) {
-        alert("Please enter at least Title and URL.");
-        return;
-      }
-
-      try {
-        await addDoc(collection(db, "videos"), { title, url, thumbnail });
-        titleEl.value = "";
-        urlEl.value = "";
-        thumbEl.value = "";
-        alert("✅ Video Added!");
-      } catch (err) {
-        console.error("Add failed:", err);
-        alert("Error adding. See console.");
-      }
-    }
-
-    // Delete video
-    window.deleteVideo = async function(id) {
-      await deleteDoc(doc(db, "videos", id));
-    }
-
     // Load videos from Firestore
     function loadVideos() {
       onSnapshot(collection(db, "videos"), (snapshot) => {
@@ -174,6 +121,26 @@
           table.appendChild(row);
         });
       });
+    }
+
+    // Add video
+    window.addVideo = async function() {
+      const title = document.getElementById("videoTitle").value;
+      const url = document.getElementById("videoURL").value;
+      const thumbnail = document.getElementById("videoThumbnail").value;
+      if (title && url && thumbnail) {
+        await addDoc(collection(db, "videos"), { title, url, thumbnail });
+        document.getElementById("videoTitle").value = "";
+        document.getElementById("videoURL").value = "";
+        document.getElementById("videoThumbnail").value = "";
+      } else {
+        alert("Please fill all fields!");
+      }
+    }
+
+    // Delete video
+    window.deleteVideo = async function(id) {
+      await deleteDoc(doc(db, "videos", id));
     }
 
     loadVideos();
