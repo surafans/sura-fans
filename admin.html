@@ -1,59 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Admin Panel - Sura Cinematic Universe</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f4f4f4;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
       margin: 0;
       padding: 0;
+      color: #333;
     }
+
+    /* Header */
     h1 {
-      background-color: #222;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
       color: white;
-      padding: 20px;
+      padding: 25px;
       margin: 0;
+      text-align: center;
+      font-size: 28px;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
+
     h2 {
-      margin-top: 10px;
+      text-align: center;
+      margin: 20px 0;
+      color: #444;
+      font-size: 22px;
     }
+
+    /* Form Card */
     .form {
-      margin: 20px;
-      padding: 20px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    input {
-      padding: 8px;
-      width: 250px;
-      margin: 5px;
-    }
-    button {
-      padding: 8px 15px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    table {
-      margin: 20px auto;
-      border-collapse: collapse;
       width: 90%;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 25px;
       background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
+
+    .form input {
+      padding: 12px;
+      width: 80%;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
     }
-    th {
-      background: #222;
+    .form input:focus {
+      border-color: #5c6bc0;
+      box-shadow: 0 0 5px rgba(92,107,192,0.5);
+    }
+
+    .form button {
+      padding: 12px 25px;
+      margin-top: 15px;
+      background: linear-gradient(135deg, #5c6bc0, #3949ab);
       color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: 0.3s;
     }
+    .form button:hover {
+      background: linear-gradient(135deg, #3949ab, #1a237e);
+      transform: scale(1.05);
+    }
+
+    /* Table */
+    table {
+      margin: 30px auto;
+      border-collapse: collapse;
+      width: 95%;
+      max-width: 1000px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 14px 12px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    th {
+      background: #5c6bc0;
+      color: white;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    td a {
+      color: #3949ab;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    td button {
+      padding: 6px 12px;
+      border: none;
+      background: #e53935;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: 0.3s;
+    }
+    td button:hover {
+      background: #b71c1c;
+    }
+
     td img {
-      width: 100px;
+      width: 90px;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -63,11 +136,11 @@
   <h2>Admin Panel</h2>
 
   <div class="form">
-    <input type="text" id="videoTitle" placeholder="Video Title">
-    <input type="text" id="videoURL" placeholder="YouTube URL">
-    <input type="text" id="videoThumbnail" placeholder="Thumbnail URL">
+    <input type="text" id="videoTitle" placeholder="🎬 Video Title">
+    <input type="text" id="videoURL" placeholder="🔗 YouTube URL">
+    <input type="text" id="videoThumbnail" placeholder="🖼️ Thumbnail URL">
     <br>
-    <button onclick="addVideo()">Add Video</button>
+    <button onclick="addVideo()">➕ Add Video</button>
   </div>
 
   <table>
@@ -84,12 +157,10 @@
 
   <!-- Firebase SDK -->
   <script type="module">
-    // Import Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } 
       from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-    // ✅ Your Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
       authDomain: "sura-fans-auth.firebaseapp.com",
@@ -99,13 +170,11 @@
       appId: "1:399675179284:web:b4e7b2d0a409c2eab34201"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
     const table = document.getElementById("videoTable");
 
-    // Load videos from Firestore
     function loadVideos() {
       onSnapshot(collection(db, "videos"), (snapshot) => {
         table.innerHTML = "";
@@ -123,7 +192,6 @@
       });
     }
 
-    // Add video
     window.addVideo = async function() {
       const title = document.getElementById("videoTitle").value;
       const url = document.getElementById("videoURL").value;
@@ -134,11 +202,10 @@
         document.getElementById("videoURL").value = "";
         document.getElementById("videoThumbnail").value = "";
       } else {
-        alert("Please fill all fields!");
+        alert("⚠️ Please fill all fields!");
       }
     }
 
-    // Delete video
     window.deleteVideo = async function(id) {
       await deleteDoc(doc(db, "videos", id));
     }
