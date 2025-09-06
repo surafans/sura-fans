@@ -10,12 +10,20 @@
       font-family: 'Segoe UI', Arial, sans-serif;
       background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
       color: #f5f5f5;
+      transition: background 0.4s, color 0.4s;
     }
+
+    /* 🌗 Dark/Light Mode */
+    body.light {
+      background: #f9f9f9;
+      color: #222;
+    }
+    body.light header { background: linear-gradient(90deg, #ddd, #bbb); }
+    body.light .section-title { color: #222; }
 
     /* Loader */
     #loader {
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
       background: #000;
       display: flex; flex-direction: column;
@@ -35,8 +43,7 @@
       color: white;
       padding: 15px 25px;
       display: flex; justify-content: space-between; align-items: center;
-      position: sticky; top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       box-shadow: 0 2px 20px rgba(229, 9, 20, 0.4);
     }
     header .logo-text { font-size: 24px; font-weight: bold; letter-spacing: 1.5px; color: #e50914; }
@@ -44,31 +51,24 @@
     .menu-icon { font-size: 28px; cursor: pointer; transition: color 0.3s; }
     .menu-icon:hover { color: #e50914; }
 
-    /* Login button */
-    .login-btn {
+    /* 🌗 Theme toggle button */
+    .theme-btn {
       width: 42px; height: 42px; border-radius: 50%;
       background: #222; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; text-decoration: none;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+      cursor: pointer; font-size: 20px; color: white;
       transition: transform 0.3s, background 0.3s;
     }
-    .login-btn:hover { transform: scale(1.1); background: #e50914; }
-    .login-btn img { width: 22px; height: 22px; filter: invert(1); }
+    .theme-btn:hover { transform: scale(1.1); background: #e50914; }
 
-    /* Dropdown */
-    .menu-dropdown {
-      display: none; position: absolute; top: 60px; right: 20px;
-      background: rgba(30,30,30,0.95); color: white;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-      border-radius: 10px; overflow: hidden; min-width: 180px;
-      backdrop-filter: blur(10px);
-      animation: fadeIn 0.3s ease;
+    /* Search bar */
+    .search-box {
+      max-width: 400px; margin: 20px auto; text-align: center;
     }
-    .menu-dropdown a {
-      display: block; padding: 12px 15px; text-decoration: none;
-      color: white; font-size: 15px; transition: background 0.3s;
+    .search-box input {
+      width: 100%; padding: 10px;
+      border-radius: 8px; border: none;
+      font-size: 16px;
     }
-    .menu-dropdown a:hover { background: #e50914; }
 
     /* Videos Section */
     .content-wrapper { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
@@ -80,10 +80,10 @@
       border-radius: 14px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.5);
       overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      backdrop-filter: blur(10px);
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp 0.6s forwards;
     }
-    .video-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 12px 30px rgba(229,9,20,0.5); }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0);} }
     .video-card img.thumbnail { width: 100%; height: 180px; object-fit: cover; display: block; }
 
     .video-content { padding: 15px; text-align: center; }
@@ -100,6 +100,18 @@
     .watch-btn:hover { transform: scale(1.08); background: linear-gradient(90deg, #b0060f, #e50914); box-shadow: 0 6px 16px rgba(229,9,20,0.6); }
 
     .empty-message { text-align: center; font-size: 18px; color: #bbb; margin-top: 40px; }
+
+    /* Back to Top */
+    #backToTop {
+      position: fixed; bottom: 20px; right: 20px;
+      background: #e50914; color: white;
+      border: none; border-radius: 50%;
+      width: 45px; height: 45px;
+      display: none; cursor: pointer;
+      font-size: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    #backToTop:hover { background: #b0060f; }
   </style>
 </head>
 <body>
@@ -114,6 +126,7 @@
   <header>
     <div class="logo-text">SURA CINEMATIC UNIVERSE</div>
     <div class="right-icons">
+      <div class="theme-btn" onclick="toggleTheme()">🌗</div>
       <a href="login.html" class="login-btn">
         <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Login">
       </a>
@@ -126,6 +139,11 @@
     </div>
   </header>
 
+  <!-- Search -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 Search videos...">
+  </div>
+
   <!-- Videos -->
   <div class="content-wrapper">
     <h2 class="section-title">Latest Videos</h2>
@@ -133,7 +151,10 @@
     <div id="emptyMessage" class="empty-message" style="display:none;">No videos available yet.</div>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Back to Top -->
+  <button id="backToTop" onclick="scrollToTop()">⬆</button>
+
+  <!-- Firebase SDK (same as before) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -153,45 +174,64 @@
     function loadVideos() {
       const videoList = document.getElementById("videoList");
       const emptyMessage = document.getElementById("emptyMessage");
+      const searchInput = document.getElementById("searchInput");
 
       onSnapshot(collection(db, "videos"), (snapshot) => {
+        let videos = [];
         videoList.innerHTML = "";
+
         if (snapshot.empty) {
           emptyMessage.style.display = "block";
         } else {
           emptyMessage.style.display = "none";
           snapshot.forEach((doc) => {
             const data = doc.data();
-
-            // ✅ determine thumbnail
-            let thumbnail = data.thumbnail || "";
-            if (!thumbnail && data.url) {
-              let videoId = "";
-              if (data.url.includes("watch?v=")) {
-                videoId = data.url.split("watch?v=")[1].split("&")[0];
-              } else if (data.url.includes("shorts/")) {
-                videoId = data.url.split("shorts/")[1].split("?")[0];
-              } else if (data.url.includes("youtu.be/")) {
-                videoId = data.url.split("youtu.be/")[1].split("?")[0];
-              }
-              thumbnail = videoId
-                ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-                : "Images/default.jpg";
-            }
-            if (!thumbnail) thumbnail = "Images/default.jpg";
-
-            // ✅ video card
-            const div = document.createElement("div");
-            div.className = "video-card";
-            div.innerHTML = `
-              <img class="thumbnail" src="${thumbnail}" alt="${data.title || "Untitled"}">
-              <div class="video-content">
-                <div class="video-title">${data.title || "Untitled"}</div>
-                <a class="watch-btn" href="${data.url || "#"}" target="_blank">▶ Watch</a>
-              </div>
-            `;
-            videoList.appendChild(div);
+            videos.push(data);
           });
+
+          // 🔍 search filter
+          function renderVideos(filter = "") {
+            videoList.innerHTML = "";
+            const filtered = videos.filter(v =>
+              (v.title || "").toLowerCase().includes(filter.toLowerCase())
+            );
+            if (filtered.length === 0) {
+              emptyMessage.style.display = "block";
+            } else {
+              emptyMessage.style.display = "none";
+              filtered.forEach((data) => {
+                let thumbnail = data.thumbnail || "";
+                if (!thumbnail && data.url) {
+                  let videoId = "";
+                  if (data.url.includes("watch?v=")) {
+                    videoId = data.url.split("watch?v=")[1].split("&")[0];
+                  } else if (data.url.includes("shorts/")) {
+                    videoId = data.url.split("shorts/")[1].split("?")[0];
+                  } else if (data.url.includes("youtu.be/")) {
+                    videoId = data.url.split("youtu.be/")[1].split("?")[0];
+                  }
+                  thumbnail = videoId
+                    ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+                    : "Images/default.jpg";
+                }
+                if (!thumbnail) thumbnail = "Images/default.jpg";
+
+                const div = document.createElement("div");
+                div.className = "video-card";
+                div.innerHTML = `
+                  <img class="thumbnail" src="${thumbnail}" alt="${data.title || "Untitled"}">
+                  <div class="video-content">
+                    <div class="video-title">${data.title || "Untitled"}</div>
+                    <a class="watch-btn" href="${data.url || "#"}" target="_blank">▶ Watch</a>
+                  </div>
+                `;
+                videoList.appendChild(div);
+              });
+            }
+          }
+
+          renderVideos();
+          searchInput.oninput = () => renderVideos(searchInput.value);
         }
       });
     }
@@ -211,6 +251,22 @@
         menu.style.display = "none";
       }
     }
+
+    // 🌗 Dark/Light Theme
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
+
+    // ⬆ Back to Top
+    window.onscroll = function() {
+      document.getElementById("backToTop").style.display =
+        document.documentElement.scrollTop > 200 ? "block" : "none";
+    };
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Loader
     window.onload = function() {
       setTimeout(() => {
         document.getElementById("loader").style.display = "none";
