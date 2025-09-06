@@ -1,278 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sura Cinematic Universe</title>
+  <meta charset="UTF-8">
+  <title>Admin Panel - Sura Cinematic Universe</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
       margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-      color: #f5f5f5;
-      transition: background 0.4s, color 0.4s;
+      padding: 0;
     }
-
-    /* 🌗 Dark/Light Mode */
-    body.light {
-      background: #f9f9f9;
-      color: #222;
-    }
-    body.light header { background: linear-gradient(90deg, #ddd, #bbb); }
-    body.light .section-title { color: #222; }
-
-    /* Loader */
-    #loader {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #000;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      z-index: 9999;
-      animation: fadeOut 1.5s ease 3s forwards;
-    }
-    #loader img { width: 140px; margin-bottom: 20px; animation: pulse 2s infinite; }
-    #loader-text { font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #e50914; opacity: 0; animation: fadeInText 2s ease forwards 1s; }
-    @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
-    @keyframes fadeInText { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: translateY(0);} }
-    @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
-
-    /* Header */
-    header {
-      background: linear-gradient(90deg, #111, #000);
+    h1 {
+      background-color: #222;
       color: white;
-      padding: 15px 25px;
-      display: flex; justify-content: space-between; align-items: center;
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 20px rgba(229, 9, 20, 0.4);
+      padding: 20px;
+      margin: 0;
     }
-    header .logo-text { font-size: 24px; font-weight: bold; letter-spacing: 1.5px; color: #e50914; }
-    .right-icons { display: flex; align-items: center; gap: 18px; }
-    .menu-icon { font-size: 28px; cursor: pointer; transition: color 0.3s; }
-    .menu-icon:hover { color: #e50914; }
-
-    /* 🌗 Theme toggle button */
-    .theme-btn {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: #222; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 20px; color: white;
-      transition: transform 0.3s, background 0.3s;
+    h2 {
+      margin-top: 10px;
     }
-    .theme-btn:hover { transform: scale(1.1); background: #e50914; }
-
-    /* Search bar */
-    .search-box {
-      max-width: 400px; margin: 20px auto; text-align: center;
+    .form {
+      margin: 20px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    .search-box input {
-      width: 100%; padding: 10px;
-      border-radius: 8px; border: none;
-      font-size: 16px;
+    input {
+      padding: 8px;
+      width: 250px;
+      margin: 5px;
     }
-
-    /* Videos Section */
-    .content-wrapper { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
-    .section-title { text-align: center; font-size: 30px; font-weight: 700; margin-bottom: 30px; color: #fff; text-transform: uppercase; letter-spacing: 2px; }
-
-    .video-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-    .video-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 14px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-      overflow: hidden;
-      opacity: 0; transform: translateY(20px);
-      animation: fadeUp 0.6s forwards;
+    button {
+      padding: 8px 15px;
+      margin-top: 10px;
+      cursor: pointer;
     }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0);} }
-    .video-card img.thumbnail { width: 100%; height: 180px; object-fit: cover; display: block; }
-
-    .video-content { padding: 15px; text-align: center; }
-    .video-title { font-size: 18px; font-weight: 600; margin-bottom: 14px; color: #f1f1f1; }
-
-    .watch-btn {
-      display: inline-block; padding: 10px 22px;
-      background: linear-gradient(90deg, #e50914, #b0060f);
-      color: white; text-decoration: none; border-radius: 8px;
-      font-size: 15px; font-weight: bold;
-      transition: transform 0.25s ease, background 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 4px 12px rgba(229,9,20,0.4);
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 90%;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    .watch-btn:hover { transform: scale(1.08); background: linear-gradient(90deg, #b0060f, #e50914); box-shadow: 0 6px 16px rgba(229,9,20,0.6); }
-
-    .empty-message { text-align: center; font-size: 18px; color: #bbb; margin-top: 40px; }
-
-    /* Back to Top */
-    #backToTop {
-      position: fixed; bottom: 20px; right: 20px;
-      background: #e50914; color: white;
-      border: none; border-radius: 50%;
-      width: 45px; height: 45px;
-      display: none; cursor: pointer;
-      font-size: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
     }
-    #backToTop:hover { background: #b0060f; }
+    th {
+      background: #222;
+      color: white;
+    }
+    td img {
+      width: 100px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Loader -->
-  <div id="loader">
-    <img src="Images/logo.png" alt="SURA Logo" />
-    <div id="loader-text">SURA CINEMATIC UNIVERSE</div>
+  <h1>SURA CINEMATIC UNIVERSE</h1>
+  <h2>Admin Panel</h2>
+
+  <div class="form">
+    <input type="text" id="videoTitle" placeholder="Video Title">
+    <input type="text" id="videoURL" placeholder="YouTube URL">
+    <input type="text" id="videoThumbnail" placeholder="Thumbnail URL">
+    <br>
+    <button onclick="addVideo()">Add Video</button>
   </div>
 
-  <!-- Header -->
-  <header>
-    <div class="logo-text">SURA CINEMATIC UNIVERSE</div>
-    <div class="right-icons">
-      <div class="theme-btn" onclick="toggleTheme()">🌗</div>
-      <a href="login.html" class="login-btn">
-        <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Login">
-      </a>
-      <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    </div>
-    <div class="menu-dropdown" id="menuDropdown">
-      <a href="#">Videos</a>
-      <a href="#">Photos</a>
-      <a href="contact.html">Contact Us</a>
-    </div>
-  </header>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>URL</th>
+        <th>Thumbnail</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="videoTable"></tbody>
+  </table>
 
-  <!-- Search -->
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="🔍 Search videos...">
-  </div>
-
-  <!-- Videos -->
-  <div class="content-wrapper">
-    <h2 class="section-title">Latest Videos</h2>
-    <div class="video-list" id="videoList"></div>
-    <div id="emptyMessage" class="empty-message" style="display:none;">No videos available yet.</div>
-  </div>
-
-  <!-- Back to Top -->
-  <button id="backToTop" onclick="scrollToTop()">⬆</button>
-
-  <!-- Firebase SDK (same as before) -->
+  <!-- Firebase SDK -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } 
+      from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
+    // ✅ Your Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyA-Is9ekckvL3otvCDbz90plvEvlPBRDT4",
       authDomain: "sura-fans-auth.firebaseapp.com",
       projectId: "sura-fans-auth",
-      storageBucket: "sura-fans-auth.appspot.com",
+      storageBucket: "sura-fans-auth.firebasestorage.app",
       messagingSenderId: "399675179284",
       appId: "1:399675179284:web:b4e7b2d0a409c2eab34201"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    const table = document.getElementById("videoTable");
+
+    // Load videos from Firestore
     function loadVideos() {
-      const videoList = document.getElementById("videoList");
-      const emptyMessage = document.getElementById("emptyMessage");
-      const searchInput = document.getElementById("searchInput");
-
       onSnapshot(collection(db, "videos"), (snapshot) => {
-        let videos = [];
-        videoList.innerHTML = "";
-
-        if (snapshot.empty) {
-          emptyMessage.style.display = "block";
-        } else {
-          emptyMessage.style.display = "none";
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            videos.push(data);
-          });
-
-          // 🔍 search filter
-          function renderVideos(filter = "") {
-            videoList.innerHTML = "";
-            const filtered = videos.filter(v =>
-              (v.title || "").toLowerCase().includes(filter.toLowerCase())
-            );
-            if (filtered.length === 0) {
-              emptyMessage.style.display = "block";
-            } else {
-              emptyMessage.style.display = "none";
-              filtered.forEach((data) => {
-                let thumbnail = data.thumbnail || "";
-                if (!thumbnail && data.url) {
-                  let videoId = "";
-                  if (data.url.includes("watch?v=")) {
-                    videoId = data.url.split("watch?v=")[1].split("&")[0];
-                  } else if (data.url.includes("shorts/")) {
-                    videoId = data.url.split("shorts/")[1].split("?")[0];
-                  } else if (data.url.includes("youtu.be/")) {
-                    videoId = data.url.split("youtu.be/")[1].split("?")[0];
-                  }
-                  thumbnail = videoId
-                    ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-                    : "Images/default.jpg";
-                }
-                if (!thumbnail) thumbnail = "Images/default.jpg";
-
-                const div = document.createElement("div");
-                div.className = "video-card";
-                div.innerHTML = `
-                  <img class="thumbnail" src="${thumbnail}" alt="${data.title || "Untitled"}">
-                  <div class="video-content">
-                    <div class="video-title">${data.title || "Untitled"}</div>
-                    <a class="watch-btn" href="${data.url || "#"}" target="_blank">▶ Watch</a>
-                  </div>
-                `;
-                videoList.appendChild(div);
-              });
-            }
-          }
-
-          renderVideos();
-          searchInput.oninput = () => renderVideos(searchInput.value);
-        }
+        table.innerHTML = "";
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${data.title}</td>
+            <td><a href="${data.url}" target="_blank">Watch</a></td>
+            <td><img src="${data.thumbnail || ''}" alt="Thumbnail"></td>
+            <td><button onclick="deleteVideo('${docSnap.id}')">Delete</button></td>
+          `;
+          table.appendChild(row);
+        });
       });
+    }
+
+    // Add video
+    window.addVideo = async function() {
+      const title = document.getElementById("videoTitle").value;
+      const url = document.getElementById("videoURL").value;
+      const thumbnail = document.getElementById("videoThumbnail").value;
+      if (title && url && thumbnail) {
+        await addDoc(collection(db, "videos"), { title, url, thumbnail });
+        document.getElementById("videoTitle").value = "";
+        document.getElementById("videoURL").value = "";
+        document.getElementById("videoThumbnail").value = "";
+      } else {
+        alert("Please fill all fields!");
+      }
+    }
+
+    // Delete video
+    window.deleteVideo = async function(id) {
+      await deleteDoc(doc(db, "videos", id));
     }
 
     loadVideos();
   </script>
-
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById("menuDropdown");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    }
-    window.onclick = function(e) {
-      const menu = document.getElementById("menuDropdown");
-      const icon = document.querySelector(".menu-icon");
-      if (!menu.contains(e.target) && !icon.contains(e.target)) {
-        menu.style.display = "none";
-      }
-    }
-
-    // 🌗 Dark/Light Theme
-    function toggleTheme() {
-      document.body.classList.toggle("light");
-    }
-
-    // ⬆ Back to Top
-    window.onscroll = function() {
-      document.getElementById("backToTop").style.display =
-        document.documentElement.scrollTop > 200 ? "block" : "none";
-    };
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    // Loader
-    window.onload = function() {
-      setTimeout(() => {
-        document.getElementById("loader").style.display = "none";
-      }, 3000);
-    }
-  </script>
-
 </body>
 </html>
