@@ -10,11 +10,13 @@
       background: linear-gradient(135deg, #ff0000, #000000);
       color: white;
       margin: 0;
-      padding: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .container {
@@ -26,6 +28,7 @@
       text-align: center;
       box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
       animation: fadeIn 0.8s ease-in-out;
+      margin: 0 auto;
     }
 
     h1 {
@@ -128,11 +131,17 @@
   </style>
 </head>
 <body>
+
+  <!-- YouTube Box -->
   <div class="container">
     <h1>📺 YouTube Channel</h1>
     <a class="youtube-link" href="https://youtube.com/@fansassociation-d6i?si=FU9l3uhhkLHQN2jm/" target="_blank">Visit Our Channel</a>
+  </div>
 
-    <button onclick="showSuggestion()">💬 Send a Suggestion</button>
+  <!-- Suggestion Box -->
+  <div class="container">
+    <h1>💬 Suggestions</h1>
+    <button onclick="showSuggestion()">Send a Suggestion</button>
 
     <form id="suggestionForm" action="https://formsubmit.co/associationfans961@gmail.com" method="POST">
       <textarea name="suggestion" placeholder="Write your suggestion..." required></textarea>
@@ -144,7 +153,10 @@
     <div id="successMessage" class="success-message">
       ✅ Suggestion sent successfully!
     </div>
+  </div>
 
+  <!-- Back to Home -->
+  <div class="container" style="background: transparent; box-shadow: none;">
     <a class="back-link" href="index.html">⬅ Back to Home</a>
   </div>
 
@@ -159,4 +171,4 @@
     }
   </script>
 </body>
-        </html>
+</html>
