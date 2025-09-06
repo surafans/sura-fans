@@ -12,49 +12,32 @@
       margin: 0;
       padding: 20px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 25px;
+      justify-content: center;
+      align-items: flex-start;
       min-height: 100vh;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .container {
+      background: rgba(0, 0, 0, 0.4); /* glassmorphism */
       backdrop-filter: blur(12px);
-      background: rgba(0, 0, 0, 0.6);
       padding: 30px;
       border-radius: 20px;
       max-width: 420px;
       width: 90%;
       text-align: center;
-      border: 2px solid rgba(255, 0, 0, 0.6);
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.3);
+      border: 1px solid rgba(255, 0, 0, 0.5);
       animation: fadeIn 0.8s ease-in-out;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .container::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 20px;
-      padding: 2px;
-      background: linear-gradient(135deg, #ff0000, #ff4d4d, #ff0000);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      animation: borderGlow 3s linear infinite;
-    }
-
-    @keyframes borderGlow {
-      0% { filter: hue-rotate(0deg); }
-      100% { filter: hue-rotate(360deg); }
+      margin: 0 auto;
     }
 
     h1 {
       font-size: 26px;
       margin-bottom: 15px;
       color: #ff4d4d;
+      text-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
     }
 
     a.youtube-link {
@@ -67,11 +50,12 @@
       margin: 15px 0;
       font-weight: bold;
       font-size: 16px;
-      transition: background 0.3s, transform 0.2s;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
     }
     a.youtube-link:hover {
       background: #cc0000;
       transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255,0,0,0.8);
     }
 
     button {
@@ -84,18 +68,18 @@
       cursor: pointer;
       margin-top: 10px;
       width: 100%;
-      transition: background 0.3s, transform 0.2s;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
     }
     button:hover {
       background: #cc0000;
       transform: scale(1.05);
+      box-shadow: 0 0 12px rgba(255, 77, 77, 0.8);
     }
 
     form {
       display: none;
       margin-top: 15px;
-      overflow: hidden;
-      transition: max-height 0.5s ease-in-out;
+      animation: fadeIn 0.5s ease-in-out;
     }
 
     textarea {
@@ -106,13 +90,14 @@
       resize: none;
       margin-bottom: 8px;
       font-size: 14px;
+      outline: none;
     }
 
-    .char-count {
+    .char-counter {
       font-size: 12px;
-      color: #ccc;
+      color: #bbb;
       text-align: right;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     input[type="submit"] {
@@ -125,61 +110,60 @@
       width: 100%;
       font-size: 16px;
       font-weight: bold;
-      transition: background 0.3s, transform 0.2s;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
     }
     input[type="submit"]:hover {
       background: #218838;
       transform: scale(1.05);
+      box-shadow: 0 0 12px rgba(40,167,69,0.8);
     }
 
-    /* Toast success */
     .toast {
       visibility: hidden;
-      min-width: 250px;
+      min-width: 220px;
       background: #28a745;
       color: white;
       text-align: center;
       border-radius: 10px;
-      padding: 14px;
+      padding: 12px;
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 14px;
-      opacity: 0;
-      transition: opacity 0.5s, bottom 0.5s;
+      box-shadow: 0 0 15px rgba(40,167,69,0.6);
+      z-index: 1000;
     }
     .toast.show {
       visibility: visible;
-      opacity: 1;
-      bottom: 40px;
+      animation: fadeIn 0.5s, fadeOut 0.5s 3s;
     }
 
-    /* Floating back button */
-    .back-btn {
+    a.back-link {
       position: fixed;
       bottom: 20px;
-      left: 20px;
+      right: 20px;
       background: #00bfff;
       color: white;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      padding: 15px 18px;
       text-decoration: none;
-      font-size: 22px;
-      box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
-      transition: transform 0.2s;
+      font-size: 18px;
+      box-shadow: 0 0 15px rgba(0,191,255,0.7);
+      transition: transform 0.3s, box-shadow 0.3s;
     }
-    .back-btn:hover {
+    a.back-link:hover {
       transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(0,191,255,1);
     }
 
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(-10px);}
       to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeOut {
+      from {opacity: 1;}
+      to {opacity: 0;}
     }
   </style>
 </head>
@@ -197,44 +181,34 @@
     <button onclick="showSuggestion()">Send a Suggestion</button>
 
     <form id="suggestionForm" action="https://formsubmit.co/associationfans961@gmail.com" method="POST">
-      <textarea id="suggestionText" name="suggestion" maxlength="250" placeholder="Write your suggestion (max 250 chars)..." required></textarea>
-      <div class="char-count" id="charCount">0 / 250</div>
+      <textarea name="suggestion" placeholder="Write your suggestion..." maxlength="250" required oninput="updateCounter(this)"></textarea>
+      <div class="char-counter" id="charCounter">0 / 250</div>
       <input type="hidden" name="_next" value="https://surafans.github.io/sura-fans/contact.html?sent=true">
       <input type="hidden" name="_captcha" value="false">
       <input type="submit" value="Send Suggestion">
     </form>
   </div>
 
-  <!-- Toast Message -->
+  <!-- Floating Toast -->
   <div id="toast" class="toast">✅ Suggestion sent successfully!</div>
 
-  <!-- Floating Back Button -->
-  <a class="back-btn" href="index.html">⬅</a>
+  <!-- Back to Home Floating Button -->
+  <a class="back-link" href="index.html">🏠</a>
 
   <script>
     function showSuggestion() {
-      const form = document.getElementById('suggestionForm');
-      if (form.style.display === 'block') {
-        form.style.display = 'none';
-      } else {
-        form.style.display = 'block';
-        form.style.maxHeight = form.scrollHeight + "px";
-      }
+      document.getElementById('suggestionForm').style.display = 'block';
     }
 
-    // Character counter
-    const textarea = document.getElementById("suggestionText");
-    const charCount = document.getElementById("charCount");
-    textarea.addEventListener("input", () => {
-      charCount.textContent = textarea.value.length + " / 250";
-    });
+    function updateCounter(el) {
+      document.getElementById('charCounter').innerText = el.value.length + " / 250";
+    }
 
-    // Toast message after redirect
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('sent') === 'true') {
-      const toast = document.getElementById("toast");
+      let toast = document.getElementById('toast');
       toast.className = "toast show";
-      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 4000);
+      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3500);
     }
   </script>
 </body>
