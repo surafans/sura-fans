@@ -12,23 +12,43 @@
       margin: 0;
       padding: 20px;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
       flex-direction: column;
-      gap: 20px;
+      align-items: center;
+      gap: 25px;
+      min-height: 100vh;
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.6);
       padding: 30px;
       border-radius: 20px;
       max-width: 420px;
       width: 90%;
       text-align: center;
+      border: 2px solid rgba(255, 0, 0, 0.6);
       box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
       animation: fadeIn 0.8s ease-in-out;
-      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: linear-gradient(135deg, #ff0000, #ff4d4d, #ff0000);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: borderGlow 3s linear infinite;
+    }
+
+    @keyframes borderGlow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
     }
 
     h1 {
@@ -74,7 +94,8 @@
     form {
       display: none;
       margin-top: 15px;
-      animation: fadeIn 0.5s ease-in-out;
+      overflow: hidden;
+      transition: max-height 0.5s ease-in-out;
     }
 
     textarea {
@@ -83,8 +104,15 @@
       border-radius: 10px;
       border: none;
       resize: none;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       font-size: 14px;
+    }
+
+    .char-count {
+      font-size: 12px;
+      color: #ccc;
+      text-align: right;
+      margin-bottom: 8px;
     }
 
     input[type="submit"] {
@@ -104,24 +132,49 @@
       transform: scale(1.05);
     }
 
-    .success-message {
-      display: none;
+    /* Toast success */
+    .toast {
+      visibility: hidden;
+      min-width: 250px;
       background: #28a745;
-      padding: 12px;
+      color: white;
+      text-align: center;
       border-radius: 10px;
-      margin-top: 15px;
+      padding: 14px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
       font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.5s, bottom 0.5s;
+    }
+    .toast.show {
+      visibility: visible;
+      opacity: 1;
+      bottom: 40px;
     }
 
-    a.back-link {
-      display: block;
-      margin-top: 20px;
-      color: #00bfff;
+    /* Floating back button */
+    .back-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: #00bfff;
+      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 22px;
+      box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+      transition: transform 0.2s;
     }
-    a.back-link:hover {
-      text-decoration: underline;
+    .back-btn:hover {
+      transform: scale(1.1);
     }
 
     @keyframes fadeIn {
@@ -144,30 +197,44 @@
     <button onclick="showSuggestion()">Send a Suggestion</button>
 
     <form id="suggestionForm" action="https://formsubmit.co/associationfans961@gmail.com" method="POST">
-      <textarea name="suggestion" placeholder="Write your suggestion..." required></textarea>
+      <textarea id="suggestionText" name="suggestion" maxlength="250" placeholder="Write your suggestion (max 250 chars)..." required></textarea>
+      <div class="char-count" id="charCount">0 / 250</div>
       <input type="hidden" name="_next" value="https://surafans.github.io/sura-fans/contact.html?sent=true">
       <input type="hidden" name="_captcha" value="false">
       <input type="submit" value="Send Suggestion">
     </form>
-
-    <div id="successMessage" class="success-message">
-      ✅ Suggestion sent successfully!
-    </div>
   </div>
 
-  <!-- Back to Home -->
-  <div class="container" style="background: transparent; box-shadow: none;">
-    <a class="back-link" href="index.html">⬅ Back to Home</a>
-  </div>
+  <!-- Toast Message -->
+  <div id="toast" class="toast">✅ Suggestion sent successfully!</div>
+
+  <!-- Floating Back Button -->
+  <a class="back-btn" href="index.html">⬅</a>
 
   <script>
     function showSuggestion() {
-      document.getElementById('suggestionForm').style.display = 'block';
+      const form = document.getElementById('suggestionForm');
+      if (form.style.display === 'block') {
+        form.style.display = 'none';
+      } else {
+        form.style.display = 'block';
+        form.style.maxHeight = form.scrollHeight + "px";
+      }
     }
 
+    // Character counter
+    const textarea = document.getElementById("suggestionText");
+    const charCount = document.getElementById("charCount");
+    textarea.addEventListener("input", () => {
+      charCount.textContent = textarea.value.length + " / 250";
+    });
+
+    // Toast message after redirect
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('sent') === 'true') {
-      document.getElementById('successMessage').style.display = 'block';
+      const toast = document.getElementById("toast");
+      toast.className = "toast show";
+      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 4000);
     }
   </script>
 </body>
