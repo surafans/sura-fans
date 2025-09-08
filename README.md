@@ -1,2 +1,1 @@
-# sura-fans
-FANS ASSOCIATION 
+ 
